@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Theo Upton">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>BlockTML Code</title>
+    
+    <link rel="stylesheet" href="html.css">
+    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="js.css">
+    <link rel="stylesheet" href="code.css">
+    
+    <template id="html-block" >
+        <div part="top">&lt;<slot name="attributes"></slot><span style="display:none;"> + </span>&gt;</div>
+        <div part="middle">
+            <div part="left"></div>
+            <slot name="children"><div></div></slot>
+        </div>
+        <div part="bottom"> </div>
+    </template>
+</head>
+<body>
+    <header>
+        <button id="settings">&#9881;</button>
+        <button id="save">&#128190;</button>
+        <button id="folder">&#128193;</button>
+        <!--<nav id="directory" popover></nav>-->
+        <h1>project name</h1>
+    </header>
+    <aside>
+        <div id="controls">
+            <button id="home">&#8962;</button>
+            <button id="refresh">&#10227;</button>
+            <button id="navbar"></button>
+            <!--<nav id="url-directory" popover></nav>-->
+        </div>
+        <iframe id="renderer" src="" tabindex="-1"></iframe>
+        <script></script>
+        <div id="console"></div>
+    </aside>
+    <main>
+        <div id="tabs">
+        </div>
+        <div id="editor"></div>
+    </main>
+    <script src="code.js" ></script>
+</body>
+</html>
+<!DOCTYPE html>
