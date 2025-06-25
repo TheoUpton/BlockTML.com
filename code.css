@@ -140,19 +140,19 @@ aside{
     /*margin: 5px 10px 10px 5px;*/
     padding: 0 5px 10px 10px;
 }
-:state(statement) {
+:state(--statement) {
     &::part(middle), &::part(bottom){
         display: none;
     }
 }
-:state(inline)::part(left){
+:state(--inline)::part(left){
     display:none;
 }
-:state(floating){
+:state(--floating){
     position: fixed !important;
     z-index: 999;
 }
-:state(ghost) {
+:state(--ghost) {
     position: relative !important;
     --elem-color:rgb(110,110,110) !important;
     --elem-bg-color:rgb(110,110,110) !important;

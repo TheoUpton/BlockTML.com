@@ -110,10 +110,10 @@ html-block, html-br{
         margin-left:var(--point-width);
     }
 
-    &:state(block), &:state(phrasingonly){
-    &:not(:state(template)):not(:state(floating)):not(:state(folded)){
+    &:state(--block), &:state(--phrasingonly){
+    &:not(:state(--template)):not(:state(--floating)):not(:state(--folded)){
         display: block;
-        &:state(container){
+        &:state(--container){
             &::part(top)::before, &::part(bottom)::before{
                 content: '';
                 position: absolute;
@@ -160,24 +160,24 @@ html-block, html-br{
         }
     }}
     
-    &:state(inline){
+    &:state(--inline){
         display: inline-block !important;
         /*margin-top:0;*/
         & > div[slot="children"]> *{
             padding-bottom: 0 !important;
         }
     }
-    &:state(template), &:state(floating){
+    &:state(--template), &:state(--floating){
         display: block !important;
         margin-top:0;
         &::part(bottom), &::part(middle), html-attr{
             display: none !important;
         }
     }
-    &:state(block) > div[slot="children"]{
+    &:state(--block) > div[slot="children"]{
         padding-top:0.1rem;
     }
-    &:state(folded){
+    &:state(--folded){
         display: block;
         margin-top:0;
         &::part(middle), html-attr{
@@ -197,7 +197,7 @@ html-text{
     border-radius: 0.5rem;
     color: var(--elem-color);
     background-color: var(--elem-bg-color);
-    &:state(template){
+    &:state(--template){
         content: "text";
     }
 }

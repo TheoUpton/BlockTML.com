@@ -1412,7 +1412,7 @@ class Block extends HTMLElement{
 
         //#region __globalInitialiseDrag
             globalInitialiseDrag(event){
-                const part = event.originalTarget.getAttribute("part")
+                const part = event.composedPath()[0].getAttribute("part")
                 if(part !=null && (part !="top" && part !="left" && part !="bottom"))
                     return;
                 const isPlaced = this.isStatus(Block.status.placed);
