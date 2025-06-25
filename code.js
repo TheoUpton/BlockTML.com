@@ -1321,7 +1321,7 @@ class Block extends HTMLElement{
             : Object.defineProperty(this, "globalInitialiseDrag", {value: undefined,enumerable: false,configurable: true});
     }
 
-    get folded(){return this._internals.states.has("folded")}
+    get folded(){return this._internals.states.has("--"+"folded")}
     set folded(bool){this._internals.states[bool? "add" : "delete"]("folded");}
 
     get parent(){
@@ -1627,7 +1627,7 @@ class Block extends HTMLElement{
             get size(){
                 const sizesSet = [];
                 this.validSizes.forEach(value => {
-                    if(this._internals.states.has(value))
+                    if(this._internals.states.has("--"+value))
                         sizesSet.push(value);
                 })
                 if(sizesSet.length > 1)
@@ -1639,8 +1639,8 @@ class Block extends HTMLElement{
                     return;
                 if(!this.isValidSize(newSize))
                     throw new Error(`Type ${newSize} not valid.\nValid types are: ${this.validTypes}`)
-                this.validSizes.forEach(size => this._internals.states.delete(size));
-                this._internals.states.add(newSize);
+                this.validSizes.forEach(size => this._internals.states.delete("--"+size));
+                this._internals.states.add("--"+newSize);
             }
         //#endregion __size
 
@@ -1653,7 +1653,7 @@ class Block extends HTMLElement{
             isValidType(queryType){return this.validTypes.includes(queryType);}
             //** @returns {(this.constructor).type} */
             get type(){
-                const types = this.validTypes.filter(type => this._internals.states.has(type));
+                const types = this.validTypes.filter(type => this._internals.states.has("--"+type));
                 /*const typesSet = [];
                 for(const value of this.validTypes)
                     if(this._internals.states.has(value))
@@ -1665,8 +1665,8 @@ class Block extends HTMLElement{
             set type(newType){
                 if(!this.isValidType(newType)){debugger;
                     throw new Error(`Type ${newType} not valid for ${this.name}.\nValid types are: ${this.validTypes}`)}
-                this.validTypes.forEach(type => this._internals.states.delete(type));
-                this._internals.states.add(newType);
+                this.validTypes.forEach(type => this._internals.states.delete("--"+type));
+                this._internals.states.add("--"+newType);
             }
         //#endregion __type
 
@@ -1683,7 +1683,7 @@ class Block extends HTMLElement{
             isValidStatus(query){return this.validStati.includes(query)}
             /**@returns {Block.status} */
             get status(){
-                const stati = this.validStati.filter(status => this._internals.states.has(status));
+                const stati = this.validStati.filter(status => this._internals.states.has("--"+status));
                 if(stati.length > 1)
                     throw new Error("Block has multiple statuses: ", stati, "\n", this);
                 if(stati.length == 0)
@@ -1693,12 +1693,12 @@ class Block extends HTMLElement{
             set status(status){
                 if(!this.isValidStatus(status)){debugger;
                     throw new Error(`Status ${status} not valid for ${this.name}.\nValid types are: ${this.validStati}`)}
-                this.validStati.forEach(status => this._internals.states.delete(status));
-                this._internals.states.add(status);
+                this.validStati.forEach(status => this._internals.states.delete("--"+status));
+                this._internals.states.add("--"+status);
                 if(status === Block.status.placed)
                     this.removeAttribute("style");
             }
-            isStatus(query){return this._internals.states.has(query)}
+            isStatus(query){return this._internals.states.has("--"+query)}
         //#endregion __status
     //#endregion size, type & status
 
