@@ -16,28 +16,28 @@ The project started as an exploration of whether visual tools could bridge the g
 
 ## Features
 
-**Creating blocks**
+**Creating blocks**  
 Blocks are created by dragging from the template panel onto the editor. A shadow indicates where the block will be placed. Releasing a block outside the editor discards it — a dedicated discard area is planned for clarity.
 
-**Smart attribute system**
+**Smart attribute system**  
 Hovering over an element reveals a `+` button that allows new attributes to be added. Only valid attributes for that specific element are accepted, with value inputs validated against expected type in real time.
 
-**Reordering blocks**
+**Reordering blocks**  
 Blocks can be picked up and moved within the editor, including blocks that contain nested children. The editor updates in real time to show where the block will land.
 
-**Undo and redo**
+**Undo and redo**  
 Every action is recorded and can be reversed. Use Ctrl+Z to undo and Ctrl+Shift+Z or Ctrl+Y to redo.
 
-**Files and folders**
+**Files and folders**  
 Multiple HTML files and folders can be created within a project. New files are created by opening the folder panel, clicking the add button, and entering a filename including the `.html` extension. Note: the folder list requires closing and reopening to reflect newly created files, automatic refresh is not yet implemented.
 
-**Tabs**
+**Tabs**  
 Files can be opened as tabs by selecting them from the folder panel. Tab closing and reordering are not yet implemented.
 
-**Live preview**
+**Live preview**  
 Pages are rendered locally in an iframe with no server required. Click the home icon to load `index.html`, or use the refresh button to reload the file shown in the navbar.
 
-**Multi-page navigation**
+**Multi-page navigation**  
 Anchor links using POSIX paths (e.g. `/folder/file.html`) work within the preview. Clicks are intercepted and resolved against the virtual file system, so multi-page projects navigate as they would in a real browser.
 
 ---
