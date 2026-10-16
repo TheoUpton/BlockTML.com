@@ -6,6 +6,7 @@ import {register, createFromJSON, populateFromJSON, isJSONObject, isFunction, ca
 import { NestedMap } from "./structures/NestedMap";
 import { SemiString } from "./structures/SemiString";
 import { CountMap } from "./structures/CountMap";
+import { Coord } from "./structures/Coord";
 //#region Objects
 
     //#region |  input rules
@@ -29,39 +30,6 @@ import { CountMap } from "./structures/CountMap";
 
 
 //#region Classes
-
-
-
-
-
-    //#region |  Data Structures
-
-
-
-
-
-        //#region |  |  Count Map
-        //#endregion ____Count Map
-    
-//#endregion data structures
-//#region |  Generic Classes
-
-
-
-
-
-        //#region |  |  Coord
-            class Coord{
-                constructor(x, y){this.x = x;this.y = y;}
-                *[Symbol.iterator]() {yield this.x;yield this.y;}
-                /**
-                 * @param {DOMRect} rect 
-                 * @return {boolean}
-                 */
-                isIn(rect){return rect.left <= this.x && this.x <= rect.right && rect.top <= this.y && this.y <= rect.bottom;}
-            }
-        //#endregion Coord
-//#endregion Generic Classes
 
 
     //#region |  |  Command
