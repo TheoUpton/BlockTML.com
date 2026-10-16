@@ -2,21 +2,8 @@
 
 
 
-
+import {register, createFromJSON, populateFromJSON, isJSONObject, isFunction, callByPath, isString} from "./utils";
 //#region Objects
-
-
-
-
-
-    //#region |  class registry
-        const classRegistry = {};
-
-        function register(Class){
-            classRegistry[Class.name] = Class;
-            return Class;
-        } 
-    //#endregion class registry
 
     //#region |  input rules
         const inputRegexes = new (class{
@@ -34,109 +21,6 @@
         })();
     //#endregion input rules
 //#endregion objects
-
-//#region Functions
-
-
-
-
-
-    //#region |  createFromJSON
-        function createFromJSON(JSON) {
-            if(!Object.hasOwn(JSON, "class"))
-                return JSON;
-            const ClassConstructor = classRegistry[JSON.class];
-            if (ClassConstructor) {
-                if (typeof ClassConstructor.createFromJSON === "function") {
-                    // Web Component class
-                    return ClassConstructor.createFromJSON(JSON);
-                } else {
-                    // Regular class
-                    return new ClassConstructor(JSON);
-                }
-            } else {
-                throw new Error(`Class ${JSON.class} not found`);
-            }
-        }
-    //#endregion createFromJSON
-
-
-    //#region |  populateFromJSON
-        function populateFromJSON(JSON){
-            if(!Object.hasOwn(JSON, "object"))
-                return JSON;
-            const object = window[JSON.object];
-            if (object) {
-                if (typeof object.populateFromJSON === "function") {
-                    return object.populateFromJSON(JSON);
-                }
-                else{
-                    throw new Error(`Object ${JSON.object} does not have the function populateFromJSON`)
-                }
-            } else {
-                throw new Error(`Object ${JSON.object} not found`);
-            }
-        }
-    //#endregion populateFromJSON
-
-
-    //#region |  isJSONObject
-        function isJSONObject(obj) {
-            return Object.prototype.toString.call(obj) === "[object Object]" &&
-                Object.getPrototypeOf(obj) === Object.prototype;
-        }
-    //#endregion isJSONObject
-
-
-    //#region |  isFunction
-        function isFunction(query){return typeof query === "function" && !/^class\s/.test(Function.prototype.toString.call(query));}
-    //#endregion isFunction
-
-
-
-    //#region |  callByPath
-        /**
-         * 
-         * @param {Object} obj 
-         * @param {[...string[], (string|{method:string, type:"getter"|"setter"|"call"|"construct"})]} path 
-         * @param  {...any} args 
-         * @returns 
-         */
-        function callByPath(obj, path, ...args) {
-            let context = obj;
-            const finalMethod = path.slice(-1)[0];
-            const methodType =  isString(finalMethod) ? undefined : finalMethod.type;
-            //path[path.length-1] = methodType ? finalMethod.method : path[path.length-1];
-            
-            args = args.map(arg => isFunction(arg)? arg() : arg);
-            
-            for (let i = 0; i < path.length - 1; i++) 
-                context = context[path[i]];
-            
-            switch(methodType){
-                case "getter":
-                    return context[path[path.length - 1].method];
-                case "setter":
-                    return context[path[path.length - 1].method] = args[0];
-                case "call":
-                    return context[path[path.length - 1].method].call(context, ...args);
-                case "construct":
-                    return Reflect.construct(context[path[path.length - 1].method], ...args);
-                default:
-                    const method = context[path[path.length - 1]];
-                    try{return isFunction(method) ? method.call(context, ...args) : method;
-                    }catch(error){return method(...args);}
-            }
-            
-            
-        }
-    //#endregion
-
-
-    //#region |  isString
-        function isString(query){return typeof query === 'string' || query instanceof String}
-    //#endregion isString
-//#endregion functions
 
 
 
