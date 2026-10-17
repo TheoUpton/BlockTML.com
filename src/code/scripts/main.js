@@ -10,7 +10,9 @@ import { Coord } from "./structures/Coord";
 import { commandStack } from "./commands/CommandStack";
 import { ObjectPath } from "./commands/paths";
 import { newListeningObjects } from "./event-handling/newListeningObjects";
+import { bindEvents } from "./event-handling/bindEvents";
 
+bindEvents();
 //#region Objects
 
     //#region |  input rules
@@ -72,34 +74,7 @@ import { newListeningObjects } from "./event-handling/newListeningObjects";
     }
 })();*/
 
-//#region Event listeners
-import { eventHandler } from "./event-handling/eventHandler";
-    //pointer
-    document.addEventListener("pointerdown", eventHandler.pointerDown.bind(eventHandler));
-    document.addEventListener("pointercancel", eventHandler.pointerCancel.bind(eventHandler));
-    document.addEventListener("pointerup", eventHandler.pointerUp.bind(eventHandler));
-    /*document.addEventListener("pointerrawupdate", (event) => {
-        if(event.buttons < eventHandler.activePointers.get(event.pointerId).buttons)
-            eventHandler.pointerUp(event);
-    });*/
-    document.addEventListener("pointermove", eventHandler.pointerMove.bind(eventHandler));
-    //document.body.addEventListener("pointerout", eventHandler.pointerOut.bind(eventHandler));
-    //keyboard
-    document.addEventListener('keydown', eventHandler.keyPressed.bind(eventHandler));
-    document.addEventListener("input", eventHandler.input.bind(eventHandler));
 
-    window.addEventListener("blur", (event)=>{
-        setTimeout(() => {
-            if(document.activeElement === iframe)
-                eventHandler._tellListeningObjects("globalLeftClick", {target: document.activeElement});
-            else
-                eventHandler.windowBlurred.bind(eventHandler)(event);
-        })
-        
-        
-    });
-//#endregion even listeners
-//#endregion Events
 
 
 
