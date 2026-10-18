@@ -2,7 +2,7 @@
 
 
 
-import {register, createFromJSON, populateFromJSON, isJSONObject, isFunction, isString} from "./utils";
+import {register, createFromJSON, populateFromJSON, isString} from "./utils";
 import { SemiString } from "./structures/SemiString";
 import { CountMap } from "./structures/CountMap";
 import { Coord } from "./structures/Coord";
@@ -12,6 +12,7 @@ import { newListeningObjects } from "./event-handling/newListeningObjects";
 import { bindEvents } from "./event-handling/bindEvents";
 import { Entry, File, Folder } from "./entries";
 import { BLOCK, HTMLBLOCK, ATTRIBUTE, NAME, VALUE, BREAK, TEXT } from "./constants"
+import { Block } from "./Block";
 
 bindEvents();
 //#region Objects
