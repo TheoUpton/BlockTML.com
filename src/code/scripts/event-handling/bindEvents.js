@@ -1,6 +1,5 @@
 import { eventHandler } from "./eventHandler";
-
-const iframe = document.getElementById("renderer");
+import { iframe } from "../DOM/iframe";
 
 export function bindEvents(){
     //pointer
