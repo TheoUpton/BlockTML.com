@@ -8,10 +8,11 @@ import { ObjectPath } from "./commands/paths";
 import { bindEvents } from "./event-handling/bindEvents";
 import { File, Folder } from "./entries";
 import { BLOCK } from "./Blocks/constants";
-import { HTMLBLOCK, ATTRIBUTE, BREAK, TEXT } from "./Blocks/HTMLBlock/constants";
+import { HTMLBLOCK, ATTRIBUTE, TEXT } from "./Blocks/HTMLBlock/constants";
 import { Block } from "./Blocks/Block";
 import { HTMLBlock } from "./Blocks/HTMLBlock/HTMLBlock";
 import "./DOM";
+import "./Blocks/HTMLBlock/HTMLBreakElement";
 
 bindEvents();
 
@@ -225,29 +226,6 @@ class HTMLText extends Block{
 register(HTMLText);
 //#endregion HTML Text
 
-//#region HTML Break
-class HTMLBreakElement extends HTMLBlock{
-    #breakElement = document.createElement("br");
-    constructor(){super();}
-    static createFromJSON(JSON){return super.createFromJSON(JSON);}
-    toJSON(){return Object.assign(super.toJSON(), {class: BREAK.name});}
-    globalPointerDrag(event){
-        this.#breakElement.remove();
-        super.globalPointerDrag(event);
-    }
-    globalCancel(){
-        HTMLElement.prototype.after.call(this, this.#breakElement);
-        super.globalCancel();
-    }
-    connectedCallback(){if(this.status != BLOCK.status.template) HTMLElement.prototype.after.call(this, this.#breakElement);}
-    disconnectedCallback(){this.#breakElement.remove();}
-    after(block){
-        block.file = this.file;
-        this.#breakElement.after(block);
-    }
-}customElements.define(BREAK.tag, HTMLBreakElement);
-register(HTMLBreakElement);
-//#endregion HTML Break
 
 //#endregion **HTML**
 
