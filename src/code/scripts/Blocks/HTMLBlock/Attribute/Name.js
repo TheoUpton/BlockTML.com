@@ -36,4 +36,3 @@ export class Name extends AttrSpan{
     };};
     static get tag(){return NAME.tag;}
 }
-customElements.define(NAME.tag, Name);

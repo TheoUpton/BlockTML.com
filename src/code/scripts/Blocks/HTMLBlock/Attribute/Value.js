@@ -21,4 +21,3 @@ export class Value extends AttrSpan{
     };
     static get tag(){return VALUE.tag;}
 }
-customElements.define(VALUE.tag, Value);

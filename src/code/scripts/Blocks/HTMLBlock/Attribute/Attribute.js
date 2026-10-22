@@ -153,6 +153,5 @@ export class HTMLAttribute extends HTMLElement{
         this.stringListELement.attachShadow({mode: 'open'})
         this.stringListELement.shadowRoot.innerHTML = `<ul><slot></slot></ul>`;
     };*/
-    static get tag(){return "html-attr";}
-}customElements.define(ATTRIBUTE.tag, HTMLAttribute);
-register(HTMLAttribute);
+    static get tag(){return ATTRIBUTE.tag;}
+}
