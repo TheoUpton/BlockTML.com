@@ -1,6 +1,6 @@
-import { register, createFromJSON, isString } from "../utils";
+import { createFromJSON, isString } from "../utils";
 import { CountMap } from "../structures/CountMap";
-import { File, Folder } from "../filesystem";
+import { File, Folder } from "./entries";
 import { BLOCK } from "../Blocks/constants";
 import { HTMLBLOCK } from "../Blocks/HTMLBlock/constants";
 import { propertiesByName } from "../Blocks/HTMLBlock/propertiesByName";
@@ -71,4 +71,4 @@ export class HTMLFile extends File{
     static get allClasses(){return HTMLFile.#allClasses;}
     static get allIds(){return HTMLFile.#allIds}
     static get templatePanel(){return HTMLFile.#templatePanel;}
-}register(HTMLFile);
+}

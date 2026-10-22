@@ -1,5 +1,5 @@
-import { callByPath, isString, register } from "../utils";
-import { Folder } from "../filesystem/entries";
+import { register, callByPath, isString } from "../utils";
+import { Folder } from "../filesystem";
 
 export class ObjectPath extends Array{
     #pathLocked = false; #type = ObjectPath.types.relative;

@@ -4,11 +4,10 @@
 
 import { createFromJSON, populateFromJSON } from "./utils";
 import { bindEvents } from "./event-handling/bindEvents";
-import { Folder } from "./filesystem/entries";
+import { Folder } from "./filesystem";
 import "./DOM";
 import "./Blocks/HTMLBlock";
 import * as defaults from "./defaults";
-import { HTMLFile } from "./filesystem/HTMLFile";
 
 bindEvents();
 

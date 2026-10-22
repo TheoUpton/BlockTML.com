@@ -1,4 +1,4 @@
-import { register, isString, createFromJSON } from "../utils";
+import { isString, createFromJSON } from "../utils";
 import { NestedMap } from "../structures/NestedMap";
 import { tabs } from "../DOM";
 import { SemiString } from "../structures/SemiString";
@@ -95,7 +95,6 @@ export class Entry{
         }
     //#endregion statics
 }
-register(Entry);
 //#endregion Entry
 
 
@@ -161,7 +160,6 @@ export class File extends Entry{
     get prerender(){return this.#prerender;}
     render(){throw new Error(`method prerender not defined in class ${this.constructor.name}`);}
 }
-register(File);
 //#endregion File
 
 
@@ -196,4 +194,4 @@ export class Folder extends Entry{
         Folder.#ROOT.toJSON = function(){return this.children.toJSON().data};
         return Folder.#ROOT;
     }
-}register(Folder);
+}

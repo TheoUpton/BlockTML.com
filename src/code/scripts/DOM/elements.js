@@ -1,4 +1,4 @@
-import { Folder } from "../filesystem/entries";
+import { Folder } from "../filesystem";
 import { iframe } from "./iframe";
 
 export const home = document.getElementById("home");
