@@ -1,9 +1,10 @@
-import { Coord } from "./structures/Coord";
-import { File } from "./entries";
-import { commandStack } from "./commands/CommandStack";
-import { isJSONObject, createFromJSON, isFunction, isString } from "./utils";
-import { ObjectPath } from "./commands/paths";
-import { BLOCK, HTMLBLOCK } from "./constants";
+import { Coord } from "../structures/Coord";
+import { File } from "../entries";
+import { commandStack } from "../commands/CommandStack";
+import { register, isJSONObject, createFromJSON, isFunction, isString } from "../utils";
+import { ObjectPath } from "../commands/paths";
+import { BLOCK } from "./constants";
+import { HTMLBLOCK } from "../constants";
 
 export class Block extends HTMLElement{
     //#region construction

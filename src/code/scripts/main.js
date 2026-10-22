@@ -10,7 +10,7 @@ import { ObjectPath } from "./commands/paths";
 import { bindEvents } from "./event-handling/bindEvents";
 import { File, Folder } from "./entries";
 import { BLOCK, HTMLBLOCK, ATTRIBUTE, NAME, VALUE, BREAK, TEXT } from "./constants"
-import { Block } from "./Block";
+import { Block } from "./Blocks/Block";
 import { iframeAnchorScript } from "./DOM";
 
 bindEvents();
