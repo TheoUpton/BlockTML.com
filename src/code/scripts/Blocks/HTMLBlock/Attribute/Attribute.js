@@ -1,7 +1,7 @@
 import { register } from "../../../utils";
 import { AttrSpan } from "./Span";
 import { ATTRIBUTE, NAME, VALUE } from "../../../constants";
-import { nameRulesByTag } from "./nameRulesByTag";
+import { Name } from "./Name";
 import { valueRulesByName } from "./valueRulesByName";
 
 export class HTMLAttribute extends HTMLElement{
@@ -54,7 +54,7 @@ export class HTMLAttribute extends HTMLElement{
 
     }
     //#region __getters & setters
-        /** @returns {InstanceType<typeof HTMLAttribute.AttrName>}*/
+        /** @returns {Name}*/
         get nameSpan(){
             if(this.#nameSpan !== undefined)
                 return this.#nameSpan;
@@ -144,41 +144,6 @@ export class HTMLAttribute extends HTMLElement{
     //#region ____Super Class: AttrSpan
     
     //#endregion super class
-    //#region ____AttrName class
-    static AttrName = class AttrName extends AttrSpan{
-        constructor(){
-            super();
-        }
-        set(){
-            const name = this.textContent;
-            this.blur();
-            if(name === "")
-                return super.set();
-            //const elemName = this.parentElement.parent.name;
-            const elemAttrNames = nameRulesByTag[this.elemName]
-            if(!(elemAttrNames && elemAttrNames.has(name)) && !nameRulesByTag.global.has(name)){
-                this.textContent = "";
-                return super.set();
-            }
-            //const valueSpan = this.parentElement.valueSpan;
-            //const ruleGroup = HTMLAttribute.AttrValue.rulesByAttrName[name];
-            //const rule = Object.hasOwn(ruleGroup, elemName) ? ruleGroup[elemName] : ruleGroup.generic;
-            const isEmptyVal = this.attrValue.rules.type == "empty";
-            if(isEmptyVal){
-                this.attrValue.style.display = "none";
-                return super.set();
-            }
-            this.attrValue.removeAttribute("style");
-            this.attrValue.textContent = "";
-            this.attrValue.select();
-        }
-        get rules(){return {
-            regexes: [/(?<!^data)-/gi, /[^a-z-]/gi],
-            case: "lower"
-        };};
-        static get tag(){return "attr-name";}
-    }
-    //#endregion namespan
 
 
 
@@ -211,6 +176,5 @@ export class HTMLAttribute extends HTMLElement{
     };*/
     static get tag(){return "html-attr";}
 }customElements.define(ATTRIBUTE.tag, HTMLAttribute);
-customElements.define(NAME.tag, HTMLAttribute.AttrName);
 customElements.define(VALUE.tag, HTMLAttribute.AttrValue);
 register(HTMLAttribute);
