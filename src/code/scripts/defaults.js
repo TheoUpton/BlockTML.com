@@ -1,3 +1,4 @@
+import { HTMLFile } from "./filesystem";
 import { ObjectPath } from "./commands/paths";
 import { HTMLBLOCK } from "./Blocks/HTMLBlock/constants";
 
