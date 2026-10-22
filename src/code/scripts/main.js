@@ -10,8 +10,7 @@ import { File, Folder } from "./entries";
 import { BLOCK } from "./Blocks/constants";
 import { HTMLBLOCK, ATTRIBUTE } from "./Blocks/HTMLBlock/constants";
 import "./DOM";
-import "./Blocks/HTMLBlock/HTMLBreakElement";
-import "./Blocks/HTMLBlock/text"
+import "./Blocks/HTMLBlock";
 
 bindEvents();
 
@@ -215,41 +214,6 @@ class HTMLFile extends File{
 
 
 
-
-//#region Default JSONs
-const defaultJSON = {
-    files:[{
-        class:HTMLFile.name, name:"index", type: "html", children:[
-            {class:HTMLBLOCK.name, name:"!DOCTYPE", canAfter: false, canPrepend: false},
-            {class:HTMLBLOCK.name, name: "html", canAfter: false, canPrepend: false, children:[
-                {class:HTMLBLOCK.name, name:"head", canAfter: false, children:[
-                    {class:HTMLBLOCK.name, name:"meta", attributes:[{class:ATTRIBUTE.name, name:"charset", value:"UTF-8", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
-                    {class:HTMLBLOCK.name, name:"meta", attributes:[{class:ATTRIBUTE.name, name:"name", value:"viewport", nameEditable: false, valueEditable: false}, {class:ATTRIBUTE.name, name:"content", value:"width=device-width, initial-scale=1.0", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
-                    {class:HTMLBLOCK.name, name:"title"}
-                    ]
-                },
-                {class:HTMLBLOCK.name, name:"body", canAfter: false}
-            ]}
-        ]
-    }],
-    settings:[
-        {object:"tabs", focusIndex: 0, tabs:[
-            {class: ObjectPath.name, path:[{/*getter:"children", method:"get",*/methods: ["children", "get"], params:["html", "index"]}]}
-            ]
-        }
-    ]
-};
-const defaultHTMLTemplatePanel = [
-    {id:"Text", children:["text", "h1","h2","h3","h4","h5","h6","p","a","br","hr","b","del","em","i","mark","q","s","small","sub","sup","u"]},
-    {id:"Formatting", children:[]},
-    {id: "Layout", children:["header","main","footer","article","aside","details","dialog","section","search","summary"]},
-    {id:"Forms", children:["form","input","textarea","button","select","optgroup","option","label","fieldset","legend","datalist","output"]},
-    {id:"Media", children:["img", "figure","figcaption","map","picture","audio","video","source",]}, 
-    {id:"lists", children:["ul","ol","li","dl","dt","dd"]},
-    {id:"Tables", children:["table","caption","th","tr","td","thead","tbody","tfoot","colgroup","col",]},
-    {id:"Programming", children:["script", "link"]}
-];
-//#endregion default JSONs
 
 //#region ***Server Interactions***
 load = function(){

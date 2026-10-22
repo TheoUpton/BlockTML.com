@@ -1,4 +1,3 @@
-import { register } from "../../utils";
 import { Block } from "../Block";
 import { BLOCK } from "../constants";
 import { HTMLBlock } from "./HTMLBlock";
@@ -45,5 +44,5 @@ export class HTMLText extends Block{
     //#region __type
 
     //#endregion __type
-}customElements.define(TEXT.tag, HTMLText);
-register(HTMLText);
+    static get tag(){return TEXT.tag;}
+}

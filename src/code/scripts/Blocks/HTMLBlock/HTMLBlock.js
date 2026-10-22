@@ -1,5 +1,5 @@
 import { Block } from "../Block";
-import { register, createFromJSON } from "../../utils";
+import { createFromJSON } from "../../utils";
 import { SemiString } from "../../structures/SemiString";
 import { HTMLAttribute } from "./Attribute";
 import { iframeAnchorScript } from "../../DOM/iframe";
@@ -9,7 +9,7 @@ import { propertiesByName } from "./propertiesByName";
 
 //#region __html block template
 const htmlBlockTemplate = (function(){
-    const template = document.getElementById("html-block");
+    const template = document.getElementById(HTMLBLOCK.tag);
     template.content.childNodes.forEach(node => {
         if(node.nodeName == "#text")
             node.remove();
@@ -21,7 +21,7 @@ const htmlBlockTemplate = (function(){
 
 
 
-class HTMLBlock extends Block{
+export class HTMLBlock extends Block{
     //#region __construction
     #newAttributeSpan; #attributesElement; #canAddAttributes;
     constructor(){
@@ -252,6 +252,4 @@ class HTMLBlock extends Block{
     static get tag(){return HTMLBLOCK.tag;}
     //#endregion statics
 }
-customElements.define(HTMLBLOCK.tag, HTMLBlock);
-register(HTMLBlock);
 //#endregion HTML Block

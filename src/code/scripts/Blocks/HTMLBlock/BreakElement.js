@@ -1,4 +1,3 @@
-import { register } from "../../utils";
 import { BLOCK } from "../constants";
 import { HTMLBlock } from "./HTMLBlock";
 import { BREAK } from "./constants";
@@ -23,5 +22,5 @@ export class Break extends HTMLBlock{
         block.file = this.file;
         this.#breakElement.after(block);
     }
-}customElements.define(BREAK.tag, Break);
-register(Break);
+    static get tag(){return BREAK.tag;}
+}
