@@ -4,13 +4,13 @@
 
 import {register, createFromJSON, populateFromJSON, isString} from "./utils";
 import { CountMap } from "./structures/CountMap";
-import { ObjectPath } from "./commands/paths";
 import { bindEvents } from "./event-handling/bindEvents";
 import { File, Folder } from "./entries";
 import { BLOCK } from "./Blocks/constants";
-import { HTMLBLOCK, ATTRIBUTE } from "./Blocks/HTMLBlock/constants";
+import { HTMLBLOCK } from "./Blocks/HTMLBlock/constants";
 import "./DOM";
 import "./Blocks/HTMLBlock";
+import * as defaults from "./defaults";
 
 bindEvents();
 
@@ -101,7 +101,7 @@ bindEvents();
 class HTMLFile extends File{
     //#region __construction
     #classes= new HTMLFile.#ClassMap(); #ids = new HTMLFile.#IdSet();
-    constructor({name, parent = Folder.ROOT, children = defaultJSON.files[0].children, viewable = true, contentEditable = true, metaEditable = true}){
+    constructor({name, parent = Folder.ROOT, children = defaults.JSON.files[0].children, viewable = true, contentEditable = true, metaEditable = true}){
         super({name, type:"html", parent, children, viewable, contentEditable, metaEditable});
     }
 
@@ -213,18 +213,16 @@ class HTMLFile extends File{
 //#endregion UI
 
 
-
-
 //#region ***Server Interactions***
 load = function(){
-    for(const file of defaultJSON.files){
+    for(const file of defaults.JSON.files){
         //Folder.ROOT;
         createFromJSON(Object.assign(file, {parent: Folder.ROOT}));
     }
-    for(const setting of defaultJSON.settings){
+    for(const setting of defaults.JSON.settings){
         populateFromJSON(setting);
     }
-    HTMLFile.populateTemplatePanel(defaultHTMLTemplatePanel);
+    HTMLFile.populateTemplatePanel(defaults.HTMLTemplatePanel);
 }
 load();
 save = function(){
