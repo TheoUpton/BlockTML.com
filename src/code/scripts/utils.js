@@ -100,3 +100,17 @@
 //#region  isString
     export function isString(query){return typeof query === 'string' || query instanceof String}
 //#endregion isString
+
+export const inputRegexes = new (class{
+    get letter(){return [/[^a-z]/gi,/(?<=[a-z]+).*/gi]}
+    get letters(){return [/[^a-z]/gi];}
+    get lettersHyphenated(){return [/[^a-z\-]/gi];}
+    get identifier(){return [/^[^a-z]*(?=[a-zA-Z])|[^a-z0-9_\-]+/gi];}
+    get identifiers(){return [/[^a-z ]/gi];}
+    get integers(){return [/[^0-9-]+|(?<=\..*)\./g, /(?!^)-/g];}
+    get naturals(){return [/[^0-9]/g];}
+    get positiveReals(){return  [/[^\d.]+|(?<=\..*)\./g];}
+    get reals(){return [/[^0-9.-]+|(?<=\..*)\./g, /(?!^)-/g];}
+    get allChars(){return [];}
+    get allCharsNoSpace(){return [/[ ]/g];}
+})();
