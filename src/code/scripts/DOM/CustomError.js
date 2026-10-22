@@ -1,5 +1,3 @@
-import { register } from "../utils";
-
 export class CustomError extends HTMLElement{
     constructor(){
         super();
@@ -19,5 +17,4 @@ export class CustomError extends HTMLElement{
 
     }
     static get tag(){return "cust-error"}
-}customElements.define(CustomError.tag, CustomError)
-register(CustomError);
+}

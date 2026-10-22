@@ -143,5 +143,3 @@ export class Tab extends HTMLElement{
         tabs.globalInitialiseDrag(event);
     }
 }
-customElements.define("file-tab", Tab);
-register(Tab);

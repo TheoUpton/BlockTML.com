@@ -11,8 +11,7 @@ import { bindEvents } from "./event-handling/bindEvents";
 import { File, Folder } from "./entries";
 import { BLOCK, HTMLBLOCK, ATTRIBUTE, NAME, VALUE, BREAK, TEXT } from "./constants"
 import { Block } from "./Block";
-import { iframeAnchorScript } from "./DOM/iframe";
-import "./DOM/elements";
+import { iframeAnchorScript } from "./DOM";
 
 bindEvents();
 //#region Objects

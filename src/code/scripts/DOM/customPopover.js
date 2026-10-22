@@ -56,4 +56,4 @@ export class CustomPopover extends HTMLElement{
     globalPointerDragEnd(event){this.dragging = false;}
 
     static get tag(){return "pop-over";}
-}customElements.define(CustomPopover.tag, CustomPopover)
+}
