@@ -1,8 +1,7 @@
 import { register } from "../../../utils";
-import { AttrSpan } from "./Span";
-import { ATTRIBUTE, NAME, VALUE } from "../../../constants";
+import { ATTRIBUTE, NAME, VALUE } from "./constants";
 import { Name } from "./Name";
-import { valueRulesByName } from "./valueRulesByName";
+import { Value } from "./Value";
 
 export class HTMLAttribute extends HTMLElement{
     //#region __construction
@@ -79,7 +78,7 @@ export class HTMLAttribute extends HTMLElement{
                 this.value = this.value;
             return this.#file = file;
         }
-        /** @returns {InstanceType<typeof HTMLAttribute.AttrValue>}*/
+        /** @returns {Value}*/
         get valueSpan(){
             if(this.#valueSpan !== undefined)
                 return this.#valueSpan;
@@ -148,26 +147,6 @@ export class HTMLAttribute extends HTMLElement{
 
 
 
-    //#region ____AttrValue Class
-    static AttrValue = class AttrValue extends AttrSpan{
-        constructor(){
-            super();
-        }
-        hide(){
-            this.style.display = "none";
-            this.textContent = "";
-        }
-        show(){this.removeAttribute("style");}
-        set(){console.log("set");super.set();}
-        get rules(){
-            const attrName = this.attrName.textContent;
-            const rules = valueRulesByName[attrName];
-            const specificRule = rules[this.elemName];
-            return specificRule ? specificRule : rules.generic;
-        };
-        static get tag(){return "attr-value";}
-    }
-    //#endregion valuespan
     //#endregion __nested classes
     /*static stringListELement = document.createElement(CustomPopover.tag);
     static {
@@ -176,5 +155,4 @@ export class HTMLAttribute extends HTMLElement{
     };*/
     static get tag(){return "html-attr";}
 }customElements.define(ATTRIBUTE.tag, HTMLAttribute);
-customElements.define(VALUE.tag, HTMLAttribute.AttrValue);
 register(HTMLAttribute);
