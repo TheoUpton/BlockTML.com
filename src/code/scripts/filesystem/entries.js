@@ -1,6 +1,7 @@
-import { register, isString, createFromJSON, SemiString } from "./utils";
-import { NestedMap } from "./structures/NestedMap";
-import { tabs } from "./DOM";
+import { register, isString, createFromJSON } from "../utils";
+import { NestedMap } from "../structures/NestedMap";
+import { tabs } from "../DOM";
+import { SemiString } from "../structures/SemiString";
 //TODO extract Entry, File, Folder into 3 separate files and decouple Folder.ROOT
 //#region Entry
 

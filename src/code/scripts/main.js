@@ -5,7 +5,7 @@
 import {register, createFromJSON, populateFromJSON, isString} from "./utils";
 import { CountMap } from "./structures/CountMap";
 import { bindEvents } from "./event-handling/bindEvents";
-import { File, Folder } from "./entries";
+import { File, Folder } from "./filesystem/entries";
 import { BLOCK } from "./Blocks/constants";
 import { HTMLBLOCK } from "./Blocks/HTMLBlock/constants";
 import "./DOM";

@@ -1,5 +1,5 @@
 import { CustomPopover } from "./customPopover";
-import { Folder } from "../entries";
+import { Folder } from "../filesystem/entries";
 import { tabs } from "./tabs";
 import { ObjectPath } from "../commands/paths";
 import { commandStack } from "../commands/CommandStack";
