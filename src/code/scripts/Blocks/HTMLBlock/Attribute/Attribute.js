@@ -1,4 +1,5 @@
 import { register, inputRegexes } from "../../../utils";
+import { byTag } from "./nameRulesByTag";
 import { AttrSpan } from "./Span";
 import { ATTRIBUTE, NAME, VALUE } from "../../../constants";
 
