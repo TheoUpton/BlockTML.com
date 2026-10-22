@@ -11,7 +11,8 @@ import { bindEvents } from "./event-handling/bindEvents";
 import { File, Folder } from "./entries";
 import { BLOCK, HTMLBLOCK, ATTRIBUTE, NAME, VALUE, BREAK, TEXT } from "./constants"
 import { Block } from "./Block";
-import { iframe, iframeAnchorScript } from "./DOM/iframe";
+import { iframeAnchorScript } from "./DOM/iframe";
+import "./DOM/elements";
 
 bindEvents();
 //#region Objects
@@ -1690,26 +1691,6 @@ register(HTMLAttribute);
 
 
 
-
-
-//#region Buttons
-const home = document.getElementById("home");
-home.globalLeftClick = () => {
-    //console.log("home pressed")
-    //debugger;
-    const file = Folder.ROOT.children.get("html", "index");
-    navbar.textContent = "/index.html";
-    iframe.render(file);
-};
-const refresh = document.getElementById("refresh");
-refresh.globalLeftClick = () => {iframe.render(iframe.renderedFile);};
-
-const navbar = document.getElementById("navbar");
-
-//#endregion buttons
-
-
-const editor = document.getElementById("editor");
 
 
 //#region iframe

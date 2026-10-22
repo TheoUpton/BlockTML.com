@@ -1,4 +1,4 @@
-const navbar = document.getElementById("navbar");
+import { navbar } from "./elements";
 import { ObjectPath } from "../commands/paths";
 
 export const iframe = document.getElementById("renderer");

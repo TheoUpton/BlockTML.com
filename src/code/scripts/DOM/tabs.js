@@ -1,4 +1,5 @@
 import { ObjectPath } from "../commands/paths";
+import { editor } from "./elements";
 
 export const tabs = (function(){
     const element = document.getElementById("tabs");
