@@ -12,6 +12,7 @@ import { BLOCK, HTMLBLOCK, ATTRIBUTE, BREAK, TEXT } from "./constants"
 import { Block } from "./Blocks/Block";
 import { iframeAnchorScript } from "./DOM";
 import { HTMLAttribute } from "./Blocks/HTMLBlock/Attribute/Attribute";
+import { propertiesByName } from "./Blocks/HTMLBlock/propertiesByName";
 
 bindEvents();
 
@@ -611,7 +612,7 @@ class HTMLFile extends File{
             const container = document.createElement("div");
             container.id = containerJSON.id;
             container.replaceChildren(...containerJSON.children.map(child => 
-                createFromJSON(Object.assign({class:HTMLBLOCK.name, name:child, status:BLOCK.status.template}, HTMLBlock.propertiesByName[child]))
+                createFromJSON(Object.assign({class:HTMLBLOCK.name, name:child, status:BLOCK.status.template}, propertiesByName[child]))
             ));
             HTMLFile.#templatePanel.append(container);
         }
@@ -733,7 +734,7 @@ class HTMLBlock extends Block{
         return block;
     }*/
     static createFromJSON(JSON){
-        const elementProperties = HTMLBlock.propertiesByName[JSON.name];
+        const elementProperties = propertiesByName[JSON.name];
         if(elementProperties === undefined)
             throw new Error(`Element name: "${JSON.name}" is not a valid element name.`);
         const defaults = {attributes: [], canAddAttributes: true, allowedChildrenTags: [], blockedChildrenTags: [], invalidTypes: []};
@@ -919,94 +920,6 @@ class HTMLBlock extends Block{
         .map(([key]) => [key, true])
     );
     static {Object.assign(this.setters, Block.setters);delete this.setters.children; delete this.setters.attributes}
-    static get propertiesByName(){
-        return {
-        //Text
-            text: {class: TEXT.name, children: "Text"},
-            h1: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            h2: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            h3: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            h4: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            h5: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            h6: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            p: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly, invalidTypes: []},
-            a: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent, attributes:[{class:ATTRIBUTE.name, name:"href", value:"", nameEditable:false}]},
-            br: {class: BREAK.name, size: BLOCK.size.statement, type: HTMLBLOCK.type.inline},
-            hr: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
-            b: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            del: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            em: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            i: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            mark: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            q: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            s: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            small: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            sub: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            sup: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            u: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-        //Formatting
-        //Layout
-            header: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            main: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            footer: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            article: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            aside: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            details: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            dialog: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            section: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            search: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            summary: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
-        //Forms
-            form: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            input: {type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.name, name:"type", value:"", nameEditable: false}]},
-            textarea: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            button: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            select: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            optgroup: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            option: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            label: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            fieldset: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            legend: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
-            datalist: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            output: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-        //Media
-            img: {size: BLOCK.size.statement, type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.name, name:"src", value:"", nameEditable:false}, {class:ATTRIBUTE.name, name:"alt", value:"", nameEditable:false}]},
-            figure: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            figcaption: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
-            map: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent},
-            picture: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            audio: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            video: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            source: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
-        //lists
-            ul: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            ol: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            li: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            dl: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            dt: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
-            dd: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
-        //Tables
-            table: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            caption: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
-            th: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            tr: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            td: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
-            thead: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            tbody: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            tfoot: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            colgroup: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-            col: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
-        //Meta
-            "!DOCTYPE": {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class: ATTRIBUTE.name, name:"html", nameEditable: false, valueEditable: false}], draggable: false, canAddAttributes: false},
-            html: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, attributes: [{class:ATTRIBUTE.name, name: "lang", value:"en", nameEditable: false}], draggable: false, canAddAttributes: false},
-            head: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, draggable: false, canAddAttributes: false},
-            meta: {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.name, name:"name", value:"", nameEditable: false}, {class:ATTRIBUTE.name, name:"content", value:"", nameEditable: false}]},
-            title: {size:BLOCK.size.container, type: HTMLBLOCK.type.inline, draggable: false, canAddAttributes: true, children:[{class:TEXT.name, children:"Title", draggable: false}]},
-            body: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, draggable: false, canAddAttributes: false},
-            script: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline, allowedChildrenTags: null},
-            link: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.name, name:"rel", value:"stylesheet", nameEditable:false, valueEditable:false},{class:ATTRIBUTE.name, name:"href", value:"", nameEditable:false}]}
-        }
-    }
     static get tag(){return "html-block";}
     //#endregion statics
 }
