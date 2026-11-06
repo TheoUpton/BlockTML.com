@@ -11,6 +11,7 @@ import { ObjectPath } from "./commands/paths";
 import { newListeningObjects } from "./event-handling/newListeningObjects";
 import { bindEvents } from "./event-handling/bindEvents";
 import { Entry, File, Folder } from "./entries";
+import { BLOCK, HTMLBLOCK, ATTRIBUTE, NAME, VALUE, BREAK, TEXT } from "./constants"
 
 bindEvents();
 //#region Objects
@@ -149,7 +150,7 @@ class Block extends HTMLElement{
     static createFromJSON(JSON){
         delete JSON.class;
         const block = document.createElement(this.tag);
-        const defaults = {status: Block.status.placed, draggable: true, canAfter: true, canPrepend:true, children: []};
+        const defaults = {status: BLOCK.status.placed, draggable: true, canAfter: true, canPrepend:true, children: []};
         //workaround as HTML Block properties need to be assigned first, namely attributes need to be created before the children;
         const temp = {}
         Object.assign(temp, JSON, defaults, JSON);
@@ -318,7 +319,7 @@ class Block extends HTMLElement{
                 const part = event.composedPath()[0].getAttribute("part")
                 if(part !=null && (part !="top" && part !="left" && part !="bottom"))
                     return;
-                const isPlaced = this.isStatus(Block.status.placed);
+                const isPlaced = this.isStatus(BLOCK.status.placed);
                 //initialise in progress command for moving placed blocks 
                 if(!isPlaced)
                     commandStack.inProgress.undo.methods = ["remove"];
@@ -327,7 +328,7 @@ class Block extends HTMLElement{
                 const rect = this.getBoundingClientRect();
                 const block = isPlaced ? this : this.cloneBlock({name:true, type: true});
                 Object.assign(block.style, {left: rect.left +"px", top: rect.top+"px"});
-                block.status = Block.status.floating;
+                block.status = BLOCK.status.floating;
                 if(!isPlaced)
                     document.body.appendChild(block);
                 
@@ -370,7 +371,7 @@ class Block extends HTMLElement{
             placedBlock = document.elementFromPoint(coord.x-1, coord.y-1);
             if(isFunction(placedBlock.getPlacedBlock))
                 placedBlock = placedBlock.getPlacedBlock(coord);
-            placedBlock = placedBlock.status !== Block.status.template ? placedBlock : undefined;
+            placedBlock = placedBlock.status !== BLOCK.status.template ? placedBlock : undefined;
 
             if(placedBlock && isFunction(placedBlock.getMethod))
                 method = placedBlock.getMethod(floatingBlock, coord);
@@ -386,7 +387,7 @@ class Block extends HTMLElement{
                 coord = new Coord(coord.x, coord.y);
             Object.assign(coord, {x:coord.x-1, y:coord.y-1});
             const placedBlock = this;
-            if(placedBlock.size === Block.size.statement)
+            if(placedBlock.size === BLOCK.size.statement)
                 return this.canAfter ? "after" : "remove";
             const part = placedBlock.shadowRoot.elementFromPoint(...coord);
             const topPart = placedBlock.shadowRoot.childNodes[0];
@@ -417,11 +418,11 @@ class Block extends HTMLElement{
                     const placedPath = new ObjectPath(placedBlock);
                     commandStack.inProgress.redo.object = () => placedPath.target;
                     commandStack.inProgress.redo.methods = [method];
-                    const floatingJSON = Object.assign(floatingBlock.toJSON(), {status: Block.status.placed});
+                    const floatingJSON = Object.assign(floatingBlock.toJSON(), {status: BLOCK.status.placed});
                     commandStack.inProgress.redo.args = [() => createFromJSON(floatingJSON)];
 
                     placedBlock[method](floatingBlock);
-                    floatingBlock.status = Block.status.placed;
+                    floatingBlock.status = BLOCK.status.placed;
 
                     const floatingPath = new ObjectPath(floatingBlock);
                     commandStack.inProgress.undo.object = () => floatingPath.target;
@@ -443,7 +444,7 @@ class Block extends HTMLElement{
                     
 
                     placedBlock[method](floatingBlock);
-                    floatingBlock.status = Block.status.placed;
+                    floatingBlock.status = BLOCK.status.placed;
                     const olderSiblingPath = new ObjectPath(olderSibling);
                     commandStack.inProgress.undo.object = () => olderSiblingPath.target;
 
@@ -455,7 +456,7 @@ class Block extends HTMLElement{
                     let olderSibling = floatingBlock.previousElementSibling;
                     commandStack.inProgress.undo.object  = olderSibling ? olderSibling : floatingBlock.parent;
                     commandStack.inProgress.undo.methods = olderSibling ? ["after"] : ["prepend"];
-                    const floatingJSON = Object.assign(floatingBlock.toJSON(), {status: Block.status.placed});
+                    const floatingJSON = Object.assign(floatingBlock.toJSON(), {status: BLOCK.status.placed});
                     commandStack.inProgress.undo.args    = [() => createFromJSON(floatingJSON)];
                     const floatingPath = new ObjectPath(floatingBlock);
                     commandStack.inProgress.redo.object  = () => floatingPath.target;
@@ -501,7 +502,7 @@ class Block extends HTMLElement{
             globalCancel(){
                 const floatingBlock = this;
                 commandStack.inProgress.clear();
-                floatingBlock.status = Block.status.placed;
+                floatingBlock.status = BLOCK.status.placed;
                 floatingBlock.#dragging(false);
             }
     
@@ -518,13 +519,7 @@ class Block extends HTMLElement{
 
 
         //#region __size
-            static #size = Object.seal({
-                container: new String("container"),
-                statement: new String("statement")
-            });
-            static {for(const key in this.#size)Object.freeze(this.#size[key]);};
-            static get size(){return Block.#size;}
-            get validSizes(){return Object.values(Block.size)}
+            get validSizes(){return Object.values(BLOCK.size)}
             isValidSize(query){return this.validSizes.includes(query)}
             /**@returns {Block.size} */
             get size(){
@@ -551,7 +546,7 @@ class Block extends HTMLElement{
             get validTypes(){
                 if(this.constructor.type)
                     return Object.values(this.constructor.type);
-                return Object.values(HTMLBlock.type);
+                return Object.values(HTMLBLOCK.type);
             }
             isValidType(queryType){return this.validTypes.includes(queryType);}
             //** @returns {(this.constructor).type} */
@@ -574,17 +569,9 @@ class Block extends HTMLElement{
         //#endregion __type
 
         //#region __status
-            static #status = Object.freeze({
-                   template: new String("template"),
-                     placed: new String("placed"),
-                placeholder: new String("placeholder"),
-                   floating: new String("floating")
-            });
-            static {for(const key in this.#status)Object.freeze(this.#status[key]);};
-            static get status(){return Block.#status;}
-            get validStati(){return Object.values(Block.status)}
+            get validStati(){return Object.values(BLOCK.status)}
             isValidStatus(query){return this.validStati.includes(query)}
-            /**@returns {Block.status} */
+            /**@returns {BLOCK.status} */
             get status(){
                 const stati = this.validStati.filter(status => this._internals.states.has("--"+status));
                 if(stati.length > 1)
@@ -598,7 +585,7 @@ class Block extends HTMLElement{
                     throw new Error(`Status ${status} not valid for ${this.name}.\nValid types are: ${this.validStati}`)}
                 this.validStati.forEach(status => this._internals.states.delete("--"+status));
                 this._internals.states.add("--"+status);
-                if(status === Block.status.placed)
+                if(status === BLOCK.status.placed)
                     this.removeAttribute("style");
             }
             isStatus(query){return this._internals.states.has("--"+query)}
@@ -636,7 +623,7 @@ class Block extends HTMLElement{
         static {delete this.setters.children;}
     //#endregion static
 }
-customElements.define("custom-block", Block);
+customElements.define(BLOCK.tag, Block);
 register(Block);
 //#endregion **Block CLass**
 
@@ -667,7 +654,7 @@ class HTMLFile extends File{
             const container = document.createElement("div");
             container.id = containerJSON.id;
             container.replaceChildren(...containerJSON.children.map(child => 
-                createFromJSON(Object.assign({class:HTMLBlock.name, name:child, status:Block.status.template}, HTMLBlock.propertiesByName[child]))
+                createFromJSON(Object.assign({class:HTMLBLOCK.name, name:child, status:BLOCK.status.template}, HTMLBlock.propertiesByName[child]))
             ));
             HTMLFile.#templatePanel.append(container);
         }
@@ -801,7 +788,7 @@ class HTMLBlock extends Block{
     
     toJSON(){
         return Object.assign(super.toJSON(), {
-            class: HTMLBlock.name,
+            class: HTMLBLOCK.name,
             name: this.name,
             type: this.type,
             attributes: this.attributes.map(attribute => attribute.toJSON()),
@@ -860,7 +847,7 @@ class HTMLBlock extends Block{
     get canAddAttributes(){return this.#canAddAttributes;}
     set canAddAttributes(bool){
         this.#canAddAttributes = bool;
-        this.addAttributesEvents(bool && this.status === Block.status.placed);
+        this.addAttributesEvents(bool && this.status === BLOCK.status.placed);
     }
     addAttributesEvents(bool){
         //this.shadowRoot.childNodes[0].onmouseleave = bool ? this._hideNewAttributeSpan.bind(this): undefined; 
@@ -913,7 +900,7 @@ class HTMLBlock extends Block{
         this.attributes.forEach(attribute => semistring.push(...attribute.prerender()));
         semistring.push(">");
         this.children.forEach(child => child.nodeName == "BR" ? "" :semistring.push(...child.prerender()));
-        if(this.size !== Block.size.statement)
+        if(this.size !== BLOCK.size.statement)
             semistring.push("</" +this.name+">");
         return semistring;
     }
@@ -933,9 +920,9 @@ class HTMLBlock extends Block{
         if(method != "prepend")
             return method;
         const placedBlock = this;
-        if(placedBlock.type === HTMLBlock.type.inline && floatingBlock.type === HTMLBlock.type.block)
+        if(placedBlock.type === HTMLBLOCK.type.inline && floatingBlock.type === HTMLBLOCK.type.block)
             return "remove";
-        if(placedBlock.type === HTMLBlock.type.phrasingonly && floatingBlock.type !== HTMLBlock.type.inline)
+        if(placedBlock.type === HTMLBLOCK.type.phrasingonly && floatingBlock.type !== HTMLBLOCK.type.inline)
             return "remove";
         return "prepend";
     }
@@ -946,28 +933,21 @@ class HTMLBlock extends Block{
 
 
     //#region __type & status
-        static #type = Object.seal({
-            ["block"]: new String("block"),
-            ["inline"]: new String("inline"),
-            ["transparent"]: new String("transparent"),
-            ["phrasingonly"]: new String("phrasingonly")
-        });
-        static get type(){return HTMLBlock.#type;}
         get type(){
             const type = super.type;
-            if(type !== HTMLBlock.type.transparent)
+            if(type !== HTMLBLOCK.type.transparent)
                 return type;
             //if transparent has block children then it is block
-            return this.children.some(child => child.type === HTMLBlock.type.block) 
-                ? HTMLBlock.type.block
-                : HTMLBlock.type.inline;
+            return this.children.some(child => child.type === HTMLBLOCK.type.block) 
+                ? HTMLBLOCK.type.block
+                : HTMLBLOCK.type.inline;
         }
         set type(newType){super.type = newType;}
 
         get status(){return super.status;}
         set status(newStatus){
             super.status = newStatus;
-            this.addAttributesEvents(newStatus === Block.status.placed && this.canAddAttributes && !this.folded);
+            this.addAttributesEvents(newStatus === BLOCK.status.placed && this.canAddAttributes && !this.folded);
         }
     //#endregion type & status
 
@@ -985,95 +965,95 @@ class HTMLBlock extends Block{
     static get propertiesByName(){
         return {
         //Text
-            text: {class: HTMLText.name, children: "Text"},
-            h1: {size: Block.size.container, type: HTMLBlock.type.block},
-            h2: {size: Block.size.container, type: HTMLBlock.type.block},
-            h3: {size: Block.size.container, type: HTMLBlock.type.block},
-            h4: {size: Block.size.container, type: HTMLBlock.type.block},
-            h5: {size: Block.size.container, type: HTMLBlock.type.block},
-            h6: {size: Block.size.container, type: HTMLBlock.type.block},
-            p: {size: Block.size.container, type: HTMLBlock.type.phrasingonly, invalidTypes: []},
-            a: {size: Block.size.container, type: HTMLBlock.type.transparent, attributes:[{class:HTMLAttribute.name, name:"href", value:"", nameEditable:false}]},
-            br: {class: HTMLBreakElement.name, size: Block.size.statement, type: HTMLBlock.type.inline},
-            hr: {size: Block.size.statement, type: HTMLBlock.type.block},
-            b: {size: Block.size.container, type: HTMLBlock.type.inline},
-            del: {size: Block.size.container, type: HTMLBlock.type.inline},
-            em: {size: Block.size.container, type: HTMLBlock.type.inline},
-            i: {size: Block.size.container, type: HTMLBlock.type.inline},
-            mark: {size: Block.size.container, type: HTMLBlock.type.inline},
-            q: {size: Block.size.container, type: HTMLBlock.type.inline},
-            s: {size: Block.size.container, type: HTMLBlock.type.inline},
-            small: {size: Block.size.container, type: HTMLBlock.type.inline},
-            sub: {size: Block.size.container, type: HTMLBlock.type.inline},
-            sup: {size: Block.size.container, type: HTMLBlock.type.inline},
-            u: {size: Block.size.container, type: HTMLBlock.type.inline},
+            text: {class: TEXT.name, children: "Text"},
+            h1: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            h2: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            h3: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            h4: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            h5: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            h6: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            p: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly, invalidTypes: []},
+            a: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent, attributes:[{class:ATTRIBUTE.name, name:"href", value:"", nameEditable:false}]},
+            br: {class: BREAK.name, size: BLOCK.size.statement, type: HTMLBLOCK.type.inline},
+            hr: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
+            b: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            del: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            em: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            i: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            mark: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            q: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            s: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            small: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            sub: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            sup: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            u: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
         //Formatting
         //Layout
-            header: {size: Block.size.container, type: HTMLBlock.type.block},
-            main: {size: Block.size.container, type: HTMLBlock.type.block},
-            footer: {size: Block.size.container, type: HTMLBlock.type.block},
-            article: {size: Block.size.container, type: HTMLBlock.type.block},
-            aside: {size: Block.size.container, type: HTMLBlock.type.block},
-            details: {size: Block.size.container, type: HTMLBlock.type.block},
-            dialog: {size: Block.size.container, type: HTMLBlock.type.block},
-            section: {size: Block.size.container, type: HTMLBlock.type.block},
-            search: {size: Block.size.container, type: HTMLBlock.type.block},
-            summary: {size: Block.size.container, type: HTMLBlock.type.phrasingonly},
+            header: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            main: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            footer: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            article: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            aside: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            details: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            dialog: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            section: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            search: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            summary: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
         //Forms
-            form: {size: Block.size.container, type: HTMLBlock.type.block},
-            input: {type: HTMLBlock.type.inline, attributes:[{class:HTMLAttribute.name, name:"type", value:"", nameEditable: false}]},
-            textarea: {size: Block.size.container, type: HTMLBlock.type.inline},
-            button: {size: Block.size.container, type: HTMLBlock.type.inline},
-            select: {size: Block.size.container, type: HTMLBlock.type.block},
-            optgroup: {size: Block.size.container, type: HTMLBlock.type.block},
-            option: {size: Block.size.container, type: HTMLBlock.type.inline},
-            label: {size: Block.size.container, type: HTMLBlock.type.inline},
-            fieldset: {size: Block.size.container, type: HTMLBlock.type.block},
-            legend: {size: Block.size.container, type: HTMLBlock.type.phrasingonly},
-            datalist: {size: Block.size.container, type: HTMLBlock.type.block},
-            output: {size: Block.size.container, type: HTMLBlock.type.inline},
+            form: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            input: {type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.name, name:"type", value:"", nameEditable: false}]},
+            textarea: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            button: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            select: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            optgroup: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            option: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            label: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            fieldset: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            legend: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
+            datalist: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            output: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
         //Media
-            img: {size: Block.size.statement, type: HTMLBlock.type.inline, attributes:[{class:HTMLAttribute.name, name:"src", value:"", nameEditable:false}, {class:HTMLAttribute.name, name:"alt", value:"", nameEditable:false}]},
-            figure: {size: Block.size.container, type: HTMLBlock.type.block},
-            figcaption: {size: Block.size.container, type: HTMLBlock.type.phrasingonly},
-            map: {size: Block.size.container, type: HTMLBlock.type.transparent},
-            picture: {size: Block.size.container, type: HTMLBlock.type.block},
-            audio: {size: Block.size.container, type: HTMLBlock.type.block},
-            video: {size: Block.size.container, type: HTMLBlock.type.block},
-            source: {size: Block.size.statement, type: HTMLBlock.type.block},
+            img: {size: BLOCK.size.statement, type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.name, name:"src", value:"", nameEditable:false}, {class:ATTRIBUTE.name, name:"alt", value:"", nameEditable:false}]},
+            figure: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            figcaption: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
+            map: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent},
+            picture: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            audio: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            video: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            source: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
         //lists
-            ul: {size: Block.size.container, type: HTMLBlock.type.block},
-            ol: {size: Block.size.container, type: HTMLBlock.type.block},
-            li: {size: Block.size.container, type: HTMLBlock.type.inline},
-            dl: {size: Block.size.container, type: HTMLBlock.type.block},
-            dt: {size: Block.size.container, type: HTMLBlock.type.phrasingonly},
-            dd: {size: Block.size.container, type: HTMLBlock.type.phrasingonly},
+            ul: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            ol: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            li: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            dl: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            dt: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
+            dd: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
         //Tables
-            table: {size: Block.size.container, type: HTMLBlock.type.block},
-            caption: {size: Block.size.container, type: HTMLBlock.type.phrasingonly},
-            th: {size: Block.size.container, type: HTMLBlock.type.inline},
-            tr: {size: Block.size.container, type: HTMLBlock.type.block},
-            td: {size: Block.size.container, type: HTMLBlock.type.inline},
-            thead: {size: Block.size.container, type: HTMLBlock.type.block},
-            tbody: {size: Block.size.container, type: HTMLBlock.type.block},
-            tfoot: {size: Block.size.container, type: HTMLBlock.type.block},
-            colgroup: {size: Block.size.container, type: HTMLBlock.type.block},
-            col: {size: Block.size.statement, type: HTMLBlock.type.block},
+            table: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            caption: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
+            th: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            tr: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            td: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
+            thead: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            tbody: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            tfoot: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            colgroup: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
+            col: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
         //Meta
-            "!DOCTYPE": {size: Block.size.statement, type:HTMLBlock.type.block, attributes:[{class: "HTMLAttribute", name:"html", nameEditable: false, valueEditable: false}], draggable: false, canAddAttributes: false},
-            html: {size:Block.size.container, type: HTMLBlock.type.block, attributes: [{class:"HTMLAttribute", name: "lang", value:"en", nameEditable: false}], draggable: false, canAddAttributes: false},
-            head: {size:Block.size.container, type: HTMLBlock.type.block, draggable: false, canAddAttributes: false},
-            meta: {size: Block.size.statement, type:HTMLBlock.type.block, attributes:[{class:"HTMLAttribute", name:"name", value:"", nameEditable: false}, {class:"HTMLAttribute", name:"content", value:"", nameEditable: false}]},
-            title: {size:Block.size.container, type: HTMLBlock.type.inline, draggable: false, canAddAttributes: true, children:[{class:"HTMLText", children:"Title", draggable: false}]},
-            body: {size:Block.size.container, type: HTMLBlock.type.block, draggable: false, canAddAttributes: false},
-            script: {size: Block.size.container, type: HTMLBlock.type.inline, allowedChildrenTags: null},
-            link: {size: Block.size.statement, type: HTMLBlock.type.block, attributes:[{class:HTMLAttribute.name, name:"rel", value:"stylesheet", nameEditable:false, valueEditable:false},{class:HTMLAttribute.name, name:"href", value:"", nameEditable:false}]}
+            "!DOCTYPE": {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class: ATTRIBUTE.name, name:"html", nameEditable: false, valueEditable: false}], draggable: false, canAddAttributes: false},
+            html: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, attributes: [{class:ATTRIBUTE.name, name: "lang", value:"en", nameEditable: false}], draggable: false, canAddAttributes: false},
+            head: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, draggable: false, canAddAttributes: false},
+            meta: {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.name, name:"name", value:"", nameEditable: false}, {class:ATTRIBUTE.name, name:"content", value:"", nameEditable: false}]},
+            title: {size:BLOCK.size.container, type: HTMLBLOCK.type.inline, draggable: false, canAddAttributes: true, children:[{class:TEXT.name, children:"Title", draggable: false}]},
+            body: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, draggable: false, canAddAttributes: false},
+            script: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline, allowedChildrenTags: null},
+            link: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.name, name:"rel", value:"stylesheet", nameEditable:false, valueEditable:false},{class:ATTRIBUTE.name, name:"href", value:"", nameEditable:false}]}
         }
     }
     static get tag(){return "html-block";}
     //#endregion statics
 }
-customElements.define(HTMLBlock.tag, HTMLBlock);
+customElements.define(HTMLBLOCK.tag, HTMLBlock);
 register(HTMLBlock);
 //#endregion HTML Block
 
@@ -1084,14 +1064,14 @@ class HTMLText extends Block{
     }
     static createFromJSON(JSON){//{file, children = "", contentEditable = true, draggable = true, size = Block.size.statement, type = HTMLBlock.type.inline, status = Block.status.placed}){
         //const block = document.createElement("html-text");
-        const defaults = {children: "", contentEditable: true, size: Block.size.statement, type: HTMLBlock.type.inline}
+        const defaults = {children: "", contentEditable: true, size: BLOCK.size.statement, type: HTMLBLOCK.type.inline}
         Object.assign(defaults, JSON);
         //Object.assign(block, {file, children, contentEditable, draggable, size, type, status});
         return super.createFromJSON(defaults);
     }
     toJSON(){
         return {
-            class: HTMLText.name,
+            class: TEXT.name,
             children: this.children,
             contentEditable: this.contentEditable,
             draggable: this.draggable
@@ -1119,7 +1099,7 @@ class HTMLText extends Block{
 
     //#endregion __type
     static get tag(){return "html-text";}
-}customElements.define(HTMLText.tag, HTMLText);
+}customElements.define(TEXT.tag, HTMLText);
 register(HTMLText);
 //#endregion HTML Text
 
@@ -1128,7 +1108,7 @@ class HTMLBreakElement extends HTMLBlock{
     #breakElement = document.createElement("br");
     constructor(){super();}
     static createFromJSON(JSON){return super.createFromJSON(JSON);}
-    toJSON(){return Object.assign(super.toJSON(), {class: HTMLBreakElement.name});}
+    toJSON(){return Object.assign(super.toJSON(), {class: BREAK.name});}
     globalPointerDrag(event){
         this.#breakElement.remove();
         super.globalPointerDrag(event);
@@ -1137,14 +1117,14 @@ class HTMLBreakElement extends HTMLBlock{
         HTMLElement.prototype.after.call(this, this.#breakElement);
         super.globalCancel();
     }
-    connectedCallback(){if(this.status != Block.status.template) HTMLElement.prototype.after.call(this, this.#breakElement);}
+    connectedCallback(){if(this.status != BLOCK.status.template) HTMLElement.prototype.after.call(this, this.#breakElement);}
     disconnectedCallback(){this.#breakElement.remove();}
     after(block){
         block.file = this.file;
         this.#breakElement.after(block);
     }
     static get tag(){return "html-br";}
-}customElements.define(HTMLBreakElement.tag, HTMLBreakElement);
+}customElements.define(BREAK.tag, HTMLBreakElement);
 register(HTMLBreakElement);
 //#endregion HTML Break
 
@@ -1162,7 +1142,7 @@ class HTMLAttribute extends HTMLElement{
     }
     /** @returns {HTMLAttribute}*/
     static createFromJSON({name = undefined, value = undefined, file, nameEditable = true, valueEditable = true, hoverable = true}){
-        const attribute = document.createElement(HTMLAttribute.tag);
+        const attribute = document.createElement(ATTRIBUTE.tag);
         attribute.spellcheck = false;
         attribute.append(attribute.nameSpan);
         attribute.append(attribute.valueSpan);
@@ -1171,7 +1151,7 @@ class HTMLAttribute extends HTMLElement{
     }
     toJSON(){
         return {
-            class: HTMLAttribute.name,
+            class: ATTRIBUTE.name,
             name: this.name,
             value: this.value,
             nameEditable: this.nameEditable,
@@ -1210,7 +1190,7 @@ class HTMLAttribute extends HTMLElement{
                 return this.#nameSpan;
             if(this.childElementCount == 2)
                 return this.#nameSpan = this.childNodes[0];
-            return this.#nameSpan = document.createElement(HTMLAttribute.AttrName.tag);
+            return this.#nameSpan = document.createElement(NAME.tag);
         }
         /**@returns {string} */
         get name(){return this.#name;}
@@ -1235,7 +1215,7 @@ class HTMLAttribute extends HTMLElement{
                 return this.#valueSpan;
             if(this.childElementCount == 2)
                 return this.#valueSpan = this.childNodes[1];
-            return this.#valueSpan = document.createElement(HTMLAttribute.AttrValue.tag);
+            return this.#valueSpan = document.createElement(VALUE.tag);
         }
         get value(){return this.#value;}
         set value(value){
@@ -1680,9 +1660,9 @@ class HTMLAttribute extends HTMLElement{
         this.stringListELement.shadowRoot.innerHTML = `<ul><slot></slot></ul>`;
     };*/
     static get tag(){return "html-attr";}
-}customElements.define(HTMLAttribute.tag, HTMLAttribute);
-customElements.define(HTMLAttribute.AttrName.tag, HTMLAttribute.AttrName);
-customElements.define(HTMLAttribute.AttrValue.tag, HTMLAttribute.AttrValue);
+}customElements.define(ATTRIBUTE.tag, HTMLAttribute);
+customElements.define(NAME.tag, HTMLAttribute.AttrName);
+customElements.define(VALUE.tag, HTMLAttribute.AttrValue);
 register(HTMLAttribute);
 
 
@@ -2148,15 +2128,15 @@ window.addEventListener("message", (event) => {
 const defaultJSON = {
     files:[{
         class:HTMLFile.name, name:"index", type: "html", children:[
-            {class:HTMLBlock.name, name:"!DOCTYPE", canAfter: false, canPrepend: false},
-            {class:HTMLBlock.name, name: "html", canAfter: false, canPrepend: false, children:[
-                {class:HTMLBlock.name, name:"head", canAfter: false, children:[
-                    {class:HTMLBlock.name, name:"meta", attributes:[{class:"HTMLAttribute", name:"charset", value:"UTF-8", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
-                    {class:HTMLBlock.name, name:"meta", attributes:[{class:"HTMLAttribute", name:"name", value:"viewport", nameEditable: false, valueEditable: false}, {class:"HTMLAttribute", name:"content", value:"width=device-width, initial-scale=1.0", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
-                    {class:HTMLBlock.name, name:"title"}
+            {class:HTMLBLOCK.name, name:"!DOCTYPE", canAfter: false, canPrepend: false},
+            {class:HTMLBLOCK.name, name: "html", canAfter: false, canPrepend: false, children:[
+                {class:HTMLBLOCK.name, name:"head", canAfter: false, children:[
+                    {class:HTMLBLOCK.name, name:"meta", attributes:[{class:ATTRIBUTE.name, name:"charset", value:"UTF-8", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
+                    {class:HTMLBLOCK.name, name:"meta", attributes:[{class:ATTRIBUTE.name, name:"name", value:"viewport", nameEditable: false, valueEditable: false}, {class:ATTRIBUTE.name, name:"content", value:"width=device-width, initial-scale=1.0", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
+                    {class:HTMLBLOCK.name, name:"title"}
                     ]
                 },
-                {class:HTMLBlock.name, name:"body", canAfter: false}
+                {class:HTMLBLOCK.name, name:"body", canAfter: false}
             ]}
         ]
     }],
