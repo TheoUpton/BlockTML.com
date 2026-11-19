@@ -1,4 +1,5 @@
-import { HTMLBLOCK, BREAK, TEXT, ATTRIBUTE } from "../../constants";
+import { ATTRIBUTE } from "../../constants";
+import { HTMLBLOCK, BREAK, TEXT } from "./constants";
 import { BLOCK } from "../constants";
 
 export const propertiesByName = Object.freeze({

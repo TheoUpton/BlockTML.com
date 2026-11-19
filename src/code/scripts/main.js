@@ -8,7 +8,8 @@ import { CountMap } from "./structures/CountMap";
 import { ObjectPath } from "./commands/paths";
 import { bindEvents } from "./event-handling/bindEvents";
 import { File, Folder } from "./entries";
-import { BLOCK, HTMLBLOCK, ATTRIBUTE, BREAK, TEXT } from "./constants"
+import { BLOCK } from "./Blocks/constants";
+import { HTMLBLOCK, ATTRIBUTE, BREAK, TEXT } from "./Blocks/HTMLBlock/constants";
 import { Block } from "./Blocks/Block";
 import { iframeAnchorScript } from "./DOM";
 import { HTMLAttribute } from "./Blocks/HTMLBlock/Attribute/Attribute";
