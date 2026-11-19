@@ -12,6 +12,8 @@ export const HTMLBLOCK = Object.freeze({
     })
 });
 
+export { ATTRIBUTE } from "./Attribute/constants";
+
 export const BREAK = Object.freeze({
     name: "Break",
     tag: "html-br"
