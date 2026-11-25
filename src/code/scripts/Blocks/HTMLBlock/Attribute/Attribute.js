@@ -1,0 +1,157 @@
+import { register } from "../../../utils";
+import { ATTRIBUTE, NAME, VALUE } from "./constants";
+import { Name } from "./Name";
+import { Value } from "./Value";
+
+export class HTMLAttribute extends HTMLElement{
+    //#region __construction
+    #nameSpan; #valueSpan; #file; #name;#value;
+    constructor(){
+        super();
+    }
+    /** @returns {HTMLAttribute}*/
+    static createFromJSON({name = undefined, value = undefined, file, nameEditable = true, valueEditable = true, hoverable = true}){
+        const attribute = document.createElement(ATTRIBUTE.tag);
+        attribute.spellcheck = false;
+        attribute.append(attribute.nameSpan);
+        attribute.append(attribute.valueSpan);
+        Object.assign(attribute, {name, value, file, nameEditable, valueEditable, hoverable});
+        return attribute;
+    }
+    toJSON(){
+        return {
+            class: ATTRIBUTE.name,
+            name: this.name,
+            value: this.value,
+            nameEditable: this.nameEditable,
+            valueEditable: this.valueEditable
+        }
+    }
+    pathFromParent(){
+        return{
+            //getter: "attributes",
+            //method: "at",
+            methods: ["attributes", "at"],
+            params: [this.parent.attributes.indexOf(this)]
+        };
+    }
+    //#endregion construction
+
+
+
+
+
+    prerender(){
+        //const semiString = new SemiString(" " + this.nameSpan.textContent);
+        //if(this.value !== undefined)
+        //    semiString.push("=\"", this.value,"\"")
+        //return semiString;
+        return " " + this.nameSpan.textContent + (this.value? "=\""+this.valueSpan.textContent +"\"": "");
+    }
+    
+    removeEvents(){
+
+    }
+    //#region __getters & setters
+        /** @returns {Name}*/
+        get nameSpan(){
+            if(this.#nameSpan !== undefined)
+                return this.#nameSpan;
+            if(this.childElementCount == 2)
+                return this.#nameSpan = this.childNodes[0];
+            return this.#nameSpan = document.createElement(NAME.tag);
+        }
+        /**@returns {string} */
+        get name(){return this.#name;}
+        set name(name){
+            if(this.name == "class")
+                this.file.classes.decrement(...this.value.split(" "));
+            else if(this.name == "id")
+                this.file.ids.delete(this.value);
+            this.#name = name;
+            this.nameSpan.textContent = name ? name : "";
+        }
+        /**@returns {HTMLFile} */
+        get file(){return this.#file;}
+        set file(file){
+            if(this.file === undefined)
+                this.value = this.value;
+            return this.#file = file;
+        }
+        /** @returns {Value}*/
+        get valueSpan(){
+            if(this.#valueSpan !== undefined)
+                return this.#valueSpan;
+            if(this.childElementCount == 2)
+                return this.#valueSpan = this.childNodes[1];
+            return this.#valueSpan = document.createElement(VALUE.tag);
+        }
+        get value(){return this.#value;}
+        set value(value){
+            if(this.file === undefined);
+            else if(this.name == "class")
+                this.file.classes.increment(...value.split(" "));
+            else if(this.name == "id")
+                this.file.ids.add(value);
+            else if(this.name == "href"){
+                
+            }
+            this.#value = value;
+            if(value !== undefined){
+                this.valueSpan.textContent = value;
+                this.valueSpan.removeAttribute("style");
+            }
+            else{
+                this.valueSpan.textContent = "";
+                this.valueSpan.style.display = "none";
+            }
+        }
+        get nameEditable(){return this.nameSpan.editable;}
+        set nameEditable(editable){this.nameSpan.editable = editable;}
+        get valueEditable(){return this.valueSpan.editable;}
+        set valueEditable(editable){this.valueSpan.editable = editable;}
+        /**@returns {IterableIterator<HTMLAttribute>}*/
+        get siblingAttributes(){
+            return (function*(){
+                const attributes = this.parentElement.attributes;
+                for(const attribute of attributes)
+                    if(attribute !== this)
+                        yield attribute;
+            }).bind(this);
+        }
+        get parent(){return this.parentNode.parentNode;}
+        set(name, value = undefined){
+            //could improve efficiency for setting classes etc
+            return Object.assign(this, {name, value});
+        }
+    //#endregion getters & setters
+    calculateBlockPlacement(coord){
+        this.parentElement.parentElement.calculateBlockPlacement(coord);
+    }
+    getPlacedBlock(coord){return this.parentElement.parentElement;}
+    getMethod(coord){return "prepend";}
+    remove(){
+        this.nameSpan
+        HTMLElement.prototype.remove.call(this);
+    }
+    //#region __Sub classes
+
+
+
+
+
+    //#region ____Super Class: AttrSpan
+    
+    //#endregion super class
+
+
+
+
+    //#endregion __nested classes
+    /*static stringListELement = document.createElement(CustomPopover.tag);
+    static {
+        this.stringListELement.attachShadow({mode: 'open'})
+        this.stringListELement.shadowRoot.innerHTML = `<ul><slot></slot></ul>`;
+    };*/
+    static get tag(){return ATTRIBUTE.tag;}
+}

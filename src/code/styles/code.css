@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Consolish';  /* The name you’ll use to reference the font */
-    src: url('./Consolish.otf') format('opentype'); /* Path to your .otf file */
+    src: url('../../assets/Consolish.otf') format('opentype'); /* Path to your .otf file */
     font-weight: normal;
     font-style: normal;
   }
