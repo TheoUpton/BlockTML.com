@@ -4,22 +4,22 @@ import { HTMLBLOCK } from "./Blocks/HTMLBlock/constants";
 
 export const JSON = {
     files:[{
-        class:HTMLFile.name, name:"index", type: "html", children:[
-            {class: HTMLBLOCK.name, name:"!DOCTYPE", canAfter: false, canPrepend: false},
-            {class: HTMLBLOCK.name, name: "html", canAfter: false, canPrepend: false, children:[
-                {class: HTMLBLOCK.name, name:"head", canAfter: false, children:[
-                    {class: HTMLBLOCK.name, name:"meta", attributes:[{class:"HTMLAttribute", name:"charset", value:"UTF-8", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
-                    {class: HTMLBLOCK.name, name:"meta", attributes:[{class:"HTMLAttribute", name:"name", value:"viewport", nameEditable: false, valueEditable: false}, {class:"HTMLAttribute", name:"content", value:"width=device-width, initial-scale=1.0", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
-                    {class: HTMLBLOCK.name, name:"title"}
+        class:HTMLFile.key, name:"index", type: "html", children:[
+            {class: HTMLBLOCK.key, name:"!DOCTYPE", canAfter: false, canPrepend: false},
+            {class: HTMLBLOCK.key, name: "html", canAfter: false, canPrepend: false, children:[
+                {class: HTMLBLOCK.key, name:"head", canAfter: false, children:[
+                    {class: HTMLBLOCK.key, name:"meta", attributes:[{class:"HTMLAttribute", name:"charset", value:"UTF-8", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
+                    {class: HTMLBLOCK.key, name:"meta", attributes:[{class:"HTMLAttribute", name:"name", value:"viewport", nameEditable: false, valueEditable: false}, {class:"HTMLAttribute", name:"content", value:"width=device-width, initial-scale=1.0", nameEditable: false, valueEditable: false}], draggable:false, canAddAttributes:false},
+                    {class: HTMLBLOCK.key, name:"title"}
                     ]
                 },
-                {class: HTMLBLOCK.name, name:"body", canAfter: false}
+                {class: HTMLBLOCK.key, name:"body", canAfter: false}
             ]}
         ]
     }],
     settings:[
         {object:"tabs", focusIndex: 0, tabs:[
-            {class: ObjectPath.name, path:[{/*getter:"children", method:"get",*/methods: ["children", "get"], params:["html", "index"]}]}
+            {class: ObjectPath.key, path:[{/*getter:"children", method:"get",*/methods: ["children", "get"], params:["html", "index"]}]}
             ]
         }
     ]

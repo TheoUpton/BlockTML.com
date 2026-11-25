@@ -21,9 +21,10 @@ export class Entry{
         }
         Object.assign(this, {type, name, parent, children, viewable, contentEditable, metaEditable});
     }
+    static key = "Entry";
     toJSON(){
         return {
-            class: Entry.name,
+            class: Entry.key,
             name: this.name,
             type: this.type,
             children: this.children,
@@ -111,10 +112,10 @@ export class File extends Entry{
     constructor({name, type, parent = Folder.ROOT, children = [], viewable = true, contentEditable = true, metaEditable = true}){
         super({name, type, parent, children, viewable, contentEditable, metaEditable});
     }
-
+    static key = "File";
     toJSON(){
         return Object.assign(super.toJSON(),{
-            class: File.name, 
+            class: File.key, 
             children: this.#loaded ? this.children.map(child => child.toJSON()) : this.children,
         });
     }
@@ -173,9 +174,10 @@ export class Folder extends Entry{
         super({name, type: "", parent, children: new NestedMap, viewable, metaEditable});
         children.forEach(child => createFromJSON(Object.assign(child, {parent: this})));
     }
+    static key = "Folder";
     toJSON(){
         return Object.assign(super.toJSON(),{
-            class: Folder.name, 
+            class: Folder.key, 
             children: this.children.toJSON().data,
         });
     }

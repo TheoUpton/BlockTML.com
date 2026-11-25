@@ -103,6 +103,7 @@ export class Tab extends HTMLElement{
         this.typeElement.globalInitialiseDrag = this.childrenInitialiseDrag;
         this.typeElement.globalMiddleClick = this.globalMiddleClick.bind(this);
     }
+    static key = "Tab";
     get nameElement(){return this.#nameElement;}
     get typeElement(){return this.#typeElement;}
     static create(file){

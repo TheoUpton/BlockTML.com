@@ -21,6 +21,7 @@ export class ObjectPath extends Array{
         }
         
     }
+    static key = "ObjectPath";
     get type(){return this.#type;}
     get pathLocked(){return this.#pathLocked;}
     get oldtarget(){
@@ -40,7 +41,7 @@ export class ObjectPath extends Array{
     }
     createFromString(string){
         if(this.pathLocked)
-            throw new Error(`${ObjectPath.name} is locked`);
+            throw new Error(`${ObjectPath.key} is locked`);
         if(!isString(string))
             throw new Error(`must be a string as argument`)
         //check correct form of file extension exists in posix
@@ -100,7 +101,7 @@ export class ObjectPath extends Array{
         if(this.type === ObjectPath.types.relative && relative instanceof Folder)
             throw new Error(`Targets for relative paths start on files, not Folder: ${relative.name}`);
         if(!this.pathLocked)
-            console.error(`${ObjectPath.name} is not locked: ${this}`);
+            console.error(`${ObjectPath.key} is not locked: ${this}`);
         if(this.type === ObjectPath.types.absolute)
             relative = Folder.ROOT;
         let currentEntry = relative;
@@ -110,7 +111,7 @@ export class ObjectPath extends Array{
     }
     toJSON(){
         return {
-            class: ObjectPath.name,
+            class: ObjectPath.key,
             path: this
         };
     }

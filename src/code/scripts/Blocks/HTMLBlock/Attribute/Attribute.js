@@ -18,9 +18,10 @@ export class HTMLAttribute extends HTMLElement{
         Object.assign(attribute, {name, value, file, nameEditable, valueEditable, hoverable});
         return attribute;
     }
+    static key = ATTRIBUTE.key;
     toJSON(){
         return {
-            class: ATTRIBUTE.name,
+            class: ATTRIBUTE.key,
             name: this.name,
             value: this.value,
             nameEditable: this.nameEditable,

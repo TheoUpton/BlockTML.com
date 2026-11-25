@@ -2,6 +2,7 @@ export class CustomError extends HTMLElement{
     constructor(){
         super();
     }
+    static key = "CustomError";
     /**@param {HTMLElement} element */
     static createError(element){
         const custError = document.createElement(CustomError.tag);

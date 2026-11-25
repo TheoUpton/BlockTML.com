@@ -1,5 +1,5 @@
 export const BLOCK = Object.freeze({
-    name: "Block",
+    key: "Block",
     tag: "custom-block",
     status: Object.freeze({
         template: new String("template"),

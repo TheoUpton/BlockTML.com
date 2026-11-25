@@ -17,7 +17,7 @@ export class Block extends HTMLElement{
         Object.defineProperty(this, "globalPointerDragEnd", {value: undefined,enumerable: false,configurable: true});
         Object.defineProperty(this, "globalPointerCancel", {value: undefined,enumerable: false,configurable: true});
     }
-    static name = BLOCK.name;
+    static key = BLOCK.key;
     /*static createFromJSON({children = [], file, type, status, draggable = true, canAppendChild = true, canPrepend = true, canAfter = true}){
         const block = document.createElement(this.tag);//"custom-block");
         //block.createSlots();
@@ -45,7 +45,7 @@ export class Block extends HTMLElement{
     }
     toJSON(){
         return{
-            class: BLOCK.name,
+            class: BLOCK.key,
             children: this.children.map(child => child.toJSON()),
             size: this.size,
             status: this.status,

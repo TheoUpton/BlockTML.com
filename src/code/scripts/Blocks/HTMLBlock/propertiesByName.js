@@ -3,7 +3,7 @@ import { BLOCK } from "../constants";
 
 export const propertiesByName = Object.freeze({
 //Text
-    text: {class: TEXT.name, children: "Text"},
+    text: {class: TEXT.key, children: "Text"},
     h1: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     h2: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     h3: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
@@ -11,8 +11,8 @@ export const propertiesByName = Object.freeze({
     h5: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     h6: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     p: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly, invalidTypes: []},
-    a: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent, attributes:[{class:ATTRIBUTE.name, name:"href", value:"", nameEditable:false}]},
-    br: {class: BREAK.name, size: BLOCK.size.statement, type: HTMLBLOCK.type.inline},
+    a: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent, attributes:[{class:ATTRIBUTE.key, name:"href", value:"", nameEditable:false}]},
+    br: {class: BREAK.key, size: BLOCK.size.statement, type: HTMLBLOCK.type.inline},
     hr: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
     b: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
     del: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
@@ -39,7 +39,7 @@ export const propertiesByName = Object.freeze({
     summary: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
 //Forms
     form: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
-    input: {type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.name, name:"type", value:"", nameEditable: false}]},
+    input: {type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.key, name:"type", value:"", nameEditable: false}]},
     textarea: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
     button: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
     select: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
@@ -51,7 +51,7 @@ export const propertiesByName = Object.freeze({
     datalist: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     output: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline},
 //Media
-    img: {size: BLOCK.size.statement, type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.name, name:"src", value:"", nameEditable:false}, {class:ATTRIBUTE.name, name:"alt", value:"", nameEditable:false}]},
+    img: {size: BLOCK.size.statement, type: HTMLBLOCK.type.inline, attributes:[{class:ATTRIBUTE.key, name:"src", value:"", nameEditable:false}, {class:ATTRIBUTE.key, name:"alt", value:"", nameEditable:false}]},
     figure: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     figcaption: {size: BLOCK.size.container, type: HTMLBLOCK.type.phrasingonly},
     map: {size: BLOCK.size.container, type: HTMLBLOCK.type.transparent},
@@ -78,12 +78,12 @@ export const propertiesByName = Object.freeze({
     colgroup: {size: BLOCK.size.container, type: HTMLBLOCK.type.block},
     col: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block},
 //Meta
-    "!DOCTYPE": {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class: ATTRIBUTE.name, name:"html", nameEditable: false, valueEditable: false}], draggable: false, canAddAttributes: false},
-    html: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, attributes: [{class:ATTRIBUTE.name, name: "lang", value:"en", nameEditable: false}], draggable: false, canAddAttributes: false},
+    "!DOCTYPE": {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class: ATTRIBUTE.key, name:"html", nameEditable: false, valueEditable: false}], draggable: false, canAddAttributes: false},
+    html: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, attributes: [{class:ATTRIBUTE.key, name: "lang", value:"en", nameEditable: false}], draggable: false, canAddAttributes: false},
     head: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, draggable: false, canAddAttributes: false},
-    meta: {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.name, name:"name", value:"", nameEditable: false}, {class:ATTRIBUTE.name, name:"content", value:"", nameEditable: false}]},
-    title: {size:BLOCK.size.container, type: HTMLBLOCK.type.inline, draggable: false, canAddAttributes: true, children:[{class:TEXT.name, children:"Title", draggable: false}]},
+    meta: {size: BLOCK.size.statement, type:HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.key, name:"name", value:"", nameEditable: false}, {class:ATTRIBUTE.key, name:"content", value:"", nameEditable: false}]},
+    title: {size:BLOCK.size.container, type: HTMLBLOCK.type.inline, draggable: false, canAddAttributes: true, children:[{class:TEXT.key, children:"Title", draggable: false}]},
     body: {size:BLOCK.size.container, type: HTMLBLOCK.type.block, draggable: false, canAddAttributes: false},
     script: {size: BLOCK.size.container, type: HTMLBLOCK.type.inline, allowedChildrenTags: null},
-    link: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.name, name:"rel", value:"stylesheet", nameEditable:false, valueEditable:false},{class:ATTRIBUTE.name, name:"href", value:"", nameEditable:false}]}
+    link: {size: BLOCK.size.statement, type: HTMLBLOCK.type.block, attributes:[{class:ATTRIBUTE.key, name:"rel", value:"stylesheet", nameEditable:false, valueEditable:false},{class:ATTRIBUTE.key, name:"href", value:"", nameEditable:false}]}
 });

@@ -42,4 +42,4 @@ export class Command {
     }
     /** @returns {Command} */
     copy(){return new Command(this.toJSON());}
-} register(Command);
+} //register(Command);

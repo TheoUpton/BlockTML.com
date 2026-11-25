@@ -5,9 +5,9 @@ import { BREAK } from "./constants";
 export class Break extends HTMLBlock{
     #breakElement = document.createElement("br");
     constructor(){super();}
-    static name = BREAK.name;
+    static key = BREAK.key;
     static createFromJSON(JSON){return super.createFromJSON(JSON);}
-    toJSON(){return Object.assign(super.toJSON(), {class: BREAK.name});}
+    toJSON(){return Object.assign(super.toJSON(), {class: BREAK.key});}
     globalPointerDrag(event){
         this.#breakElement.remove();
         super.globalPointerDrag(event);
