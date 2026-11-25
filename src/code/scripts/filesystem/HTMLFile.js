@@ -10,14 +10,14 @@ export class HTMLFile extends File{
     constructor({name, parent = Folder.ROOT, children = defaults.JSON.files[0].children, viewable = true, contentEditable = true, metaEditable = true}){
         super({name, type:"html", parent, children, viewable, contentEditable, metaEditable});
     }
-
+    static key = "HTMLFile";
     static populateTemplatePanel(JSON){
         HTMLFile.#templatePanel.id = "html-template-panel";
         for(const containerJSON of JSON){
             const container = document.createElement("div");
             container.id = containerJSON.id;
             container.replaceChildren(...containerJSON.children.map(child => 
-                createFromJSON(Object.assign({class:HTMLBLOCK.name, name:child, status:BLOCK.status.template}, propertiesByName[child]))
+                createFromJSON(Object.assign({class:HTMLBLOCK.key, name:child, status:BLOCK.status.template}, propertiesByName[child]))
             ));
             HTMLFile.#templatePanel.append(container);
         }

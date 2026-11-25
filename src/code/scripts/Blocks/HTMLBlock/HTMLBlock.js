@@ -35,6 +35,7 @@ export class HTMLBlock extends Block{
         this.#newAttributeSpan.hide = function(){this.style.display = "none"};
         shadowRoot.appendChild(clone);
     }
+    static key = HTMLBLOCK.key;
     /**
      * @param {Object} options 
      * @param {string} options.name - the name of the element
@@ -75,7 +76,7 @@ export class HTMLBlock extends Block{
     
     toJSON(){
         return Object.assign(super.toJSON(), {
-            class: HTMLBLOCK.name,
+            class: HTMLBLOCK.key,
             name: this.name,
             type: this.type,
             attributes: this.attributes.map(attribute => attribute.toJSON()),

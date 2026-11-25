@@ -6,7 +6,7 @@ export class Name extends AttrSpan{
     constructor(){
         super();
     }
-    static name = NAME.name;
+    static key = NAME.key;
     set(){
         const name = this.textContent;
         this.blur();

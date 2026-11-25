@@ -1,7 +1,7 @@
 import { BLOCK } from "../constants";
 
 export const HTMLBLOCK = Object.freeze({
-    name: "HTMLBlock",
+    key: "HTMLBlock",
     tag: "html-block",
     type: Object.freeze({
         ...BLOCK.type,
@@ -15,11 +15,11 @@ export const HTMLBLOCK = Object.freeze({
 export { ATTRIBUTE } from "./Attribute/constants";
 
 export const BREAK = Object.freeze({
-    name: "Break",
+    key: "Break",
     tag: "html-br"
 });
 export const TEXT = Object.freeze({
-    name: "HTMLText",
+    key: "HTMLText",
     tag: "html-text"
 });
 

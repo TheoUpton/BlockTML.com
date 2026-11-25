@@ -11,9 +11,10 @@ export class NestedMap extends SortedMap{
             this.set(key1, key2, data)
         }
     }
+    static key = "NestedMap";
     toJSON(){
         return {
-            class: NestedMap.name,
+            class: NestedMap.key,
             data: [...this.entries()]
         };
     }

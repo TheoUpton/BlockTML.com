@@ -3,7 +3,7 @@
 
 
     export function register(Class){
-        classRegistry[Class.name] = Class;
+        classRegistry[Class.key] = Class;
         return Class;
     } 
 //#endregion registry

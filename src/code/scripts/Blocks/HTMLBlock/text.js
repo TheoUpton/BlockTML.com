@@ -7,7 +7,7 @@ export class HTMLText extends Block{
     constructor(){
         super();
     }
-    static name = TEXT.name;
+    static key = TEXT.key;
     static createFromJSON(JSON){//{file, children = "", contentEditable = true, draggable = true, size = Block.size.statement, type = HTMLBlock.type.inline, status = Block.status.placed}){
         //const block = document.createElement("html-text");
         const defaults = {children: "", contentEditable: true, size: BLOCK.size.statement, type: HTMLBLOCK.type.inline}
@@ -17,7 +17,7 @@ export class HTMLText extends Block{
     }
     toJSON(){
         return {
-            class: TEXT.name,
+            class: TEXT.key,
             children: this.children,
             contentEditable: this.contentEditable,
             draggable: this.draggable

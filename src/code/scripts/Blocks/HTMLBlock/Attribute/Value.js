@@ -6,7 +6,7 @@ export class Value extends AttrSpan{
     constructor(){
         super();
     }
-    static name = VALUE.name;
+    static key = VALUE.key;
     hide(){
         this.style.display = "none";
         this.textContent = "";
