@@ -2,14 +2,13 @@
 
 
 
-import { createFromJSON, populateFromJSON } from "./utils";
 import { bindEvents } from "./event-handling/bindEvents";
-import { Folder } from "./filesystem";
+import { load } from "./persistence";
 import "./DOM";
 import "./Blocks/HTMLBlock";
-import * as defaults from "./defaults";
 
 bindEvents();
+load();
 
 
 //#region *****EventListening*****
@@ -105,20 +104,3 @@ bindEvents();
 
 //#endregion UI
 
-
-//#region ***Server Interactions***
-load = function(){
-    for(const file of defaults.JSON.files){
-        //Folder.ROOT;
-        createFromJSON(Object.assign(file, {parent: Folder.ROOT}));
-    }
-    for(const setting of defaults.JSON.settings){
-        populateFromJSON(setting);
-    }
-    HTMLFile.populateTemplatePanel(defaults.HTMLTemplatePanel);
-}
-load();
-save = function(){
-
-}
-//#endregion server interactions
